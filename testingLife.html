@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="style.css">
+    <title>Game Of Life</title>
+	<style>
+.button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+.button:hover{
+	background-color: #4CABBB;
+}
+</style>
+</head>
+
+<body>
+	
+    <center>
+		<h3> Game of Life</h3>
+        <br />
+        
+			
+			
+	
+		
+	
+	</center>
+		<div id ="status" ><div>
+		<br />
+    
+	<input type = "number" id = "mynumber">
+	<center>
+	<a class="button" onclick="callInterval();">
+		Start Game
+	</a>
+
+	<a class="button"  onclick="endInterval();">
+		End Game
+		
+	</a>
+		
+		
+	
+	<a class="button" onclick="startGame();">
+		Generation +1
+	</a>
+
+	<a class="button"  onclick="startGameaLot();">
+		Generation +23
+		
+	</a>
+
+		</center>
+		<center>
+			<a class="button"  onclick="ship1();">
+		Ship 1
+		
+	</a>
+	<a class="button"  onclick="ship2();">
+		Ship 2
+		
+	</a>
+	<a class="button"  onclick="ship3();">
+		Ship 3
+		
+	</a>
+	<a class="button"  onclick="ship4();">
+		Ship 4
+		
+	</a>
+		</center>
+		<center>
+		<a class="button" onclick="a();">Reset</a>
+		</center>
+		<br><br>
+	<center>
+	<div id ="currGen"> Current Generation: 0 <div>
+	</center>
+	<br></br>
+    <table align="center" id="tblMain" border="2" style="cursor: pointer;">
+      
+        
+    </table>
+    <br />
+	
+	
+	
+    <script language="javascript">
+		var timer;
+		var gen = 0;
+		
+	
+		//make table and fill with 0s
+		
+        var tbl = document.getElementById("tblMain");
+		
+		initTable(tbl,50);
+		
+        if (tbl != null) {
+            for (var i = 0; i < tbl.rows.length; i++) {	
+                for (var j = 0; j < tbl.rows[i].cells.length; j++){
+					
+					tbl.rows[i].cells[j].innerHTML = '0';
+					
+					tbl.rows[i].cells[j].style.color = "white";
+					tbl.rows[i].cells[j].style.backgroundColor = "white";
+					
+                    tbl.rows[i].cells[j].onclick = function () { changeval(this); };
+				}
+            }
+        }
+			
+ 
+        function changeval(cell) {
+			var x = cell.innerHTML;
+			
+			
+			if(x == 0){
+				cell.innerHTML = 1;
+				cell.style.color = "blue";
+				cell.style.backgroundColor = "blue";
+				
+			}
+			
+			if (x == 1){
+				cell.innerHTML = 0;
+				cell.style.color = "white";
+				cell.style.backgroundColor = "white";
+			}
+			
+			
+			
+			
+        }
+			
+			
+		
+		function startGame(){
+		var tbl = document.getElementById("tblMain");
+		if(gen == -1){
+			if (tbl != null) {
+            for (var i = 0; i < tbl.rows.length; i++) {
+                for (var j = 0; j < tbl.rows[i].cells.length; j++){
+					
+					tbl.rows[i].cells[j].innerHTML = '0';
+					tbl.rows[i].cells[j].style.color = "white";
+					tbl.rows[i].cells[j].style.backgroundColor = "white";
+					
+					
+					
+				}
+            }
+        }
+			
+			
+		}
+		
+		gen++;
+		document.getElementById("currGen").innerHTML = "Current Generation: "+gen;
+		
+		var count;
+		var life;
+		
+		life = Create2DArray(500);
+		
+        if (tbl != null) {
+            for (var i = 0; i < tbl.rows.length; i++) {
+                for (var j = 0; j < tbl.rows[i].cells.length; j++){
+					
+					var k = tbl.rows[i].cells[j].innerHTML;
+					life[i][j] = k;
+					
+					
+				}
+            }
+        }
+		
+		
+		
+		for (var i = 0; i < tbl.rows.length; i++) {
+                for (var j = 0; j < tbl.rows[i].cells.length; j++){
+					var t = life[i][j];
+					
+					if(t == 1){
+						
+						count = 0;
+						if(life[i+1][j] == 1){
+							count++;
+						}
+						if(life[i+1][j+1] ==1){
+							count++;
+						}
+						if(life[i+1][j-1] == 1){
+							count++;
+						}
+						if(life[i-1][j] == 1){
+							count++;
+						}
+						if(life[i-1][j+1] == 1){
+							count++;
+						}
+						if(life[i-1][j-1] == 1){
+							count++;
+						}
+						if(life[i][j-1] == 1){
+							count++;
+						}
+						if(life[i][j+1] == 1){
+							count++;
+						}
+						
+						if(count>3 || count<2){
+							tbl.rows[i].cells[j].innerHTML='0';
+							tbl.rows[i].cells[j].style.color = "white";
+							tbl.rows[i].cells[j].style.backgroundColor = "white";
+						}
+						
+						
+						
+					
+					}
+					
+					if(t == 0){
+						count = 0;
+						if(life[i+1][j] == 1){
+							count++;
+						}
+						if(life[i+1][j+1] ==1){
+							count++;
+						}
+						if(life[i+1][j-1] == 1){
+							count++;
+						}
+						if(i>1){
+						if(life[i-1][j] == 1){
+							count++;
+						}
+						if(life[i-1][j+1] == 1){
+							count++;
+						}
+						if(life[i-1][j-1] == 1){
+							count++;
+						}
+						}
+						if(life[i][j-1] == 1){
+							count++;
+						}
+						if(life[i][j+1] == 1){
+							count++;
+						}
+						
+						if(count==3){
+							tbl.rows[i].cells[j].innerHTML='1';
+							tbl.rows[i].cells[j].style.color = "blue";
+							tbl.rows[i].cells[j].style.backgroundColor = "blue";
+						}
+						
+					}
+					
+					
+					
+					
+					
+					
+				}
+            }
+		
+		
+		}
+		
+		
+		
+		
+		function Create2DArray(rows) {
+		var arr = [];
+
+		for (var i=0;i<rows;i++) {
+			arr[i] = [];
+		}
+
+		return arr;
+		}
+		
+		function addRow(table){
+		    var l = table.rows.length;
+			var tempRow = table.insertRow(l);
+			for(k = 0; k<table.rows[0].cells.length ;k++){
+				tempRow.insertCell(k);
+				table.rows[l].cells[k].innerHTML = '0';
+				
+			}
+			
+		}
+		
+		function initTable(table,size){
+			
+			for(i = 0; i<size; i++){
+				var temp = table.insertRow(i);
+				for(j=0; j<size; j++){
+					temp.insertCell(j);
+				}
+			}
+		
+		}
+		
+		function startGameaLot(){
+			for(i=1; i<=23; i++){
+			startGame();
+			}
+		}
+		
+		function gridSize(){
+			document.getElementById("gridSize");
+		}
+		
+		
+		
+		function a(){
+			gen = -1;
+			clearInterval(timer);
+			timer = 0;
+			startGame();
+		}
+		function callInterval(){
+			timer = setInterval(startGame, 500)
+		}
+		function endInterval(){
+			clearInterval(timer);
+			timer = 0;
+		}
+		
+		
+		function ship1(){
+			tbl.rows[4].cells[22].innerHTML='1';
+			tbl.rows[4].cells[22].style.backgroundColor='blue';
+			tbl.rows[4].cells[22].style.color='blue';
+			
+			tbl.rows[4].cells[23].innerHTML='1';
+			tbl.rows[4].cells[23].style.backgroundColor='blue';
+			tbl.rows[4].cells[23].style.color='blue';
+			
+			tbl.rows[5].cells[22].innerHTML='1';
+			tbl.rows[5].cells[22].style.backgroundColor='blue';
+			tbl.rows[5].cells[22].style.color='blue';
+			
+			tbl.rows[5].cells[23].innerHTML='1';
+			tbl.rows[5].cells[23].style.backgroundColor='blue';
+			tbl.rows[5].cells[23].style.color='blue';
+			
+			
+			
+			
+		}
+		function ship2(){
+			tbl.rows[18].cells[19].innerHTML='1';
+			tbl.rows[18].cells[19].style.backgroundColor='blue';
+			tbl.rows[18].cells[19].style.color='blue';
+			
+			tbl.rows[19].cells[19].innerHTML='1';
+			tbl.rows[19].cells[19].style.backgroundColor='blue';
+			tbl.rows[19].cells[19].style.color='blue';
+			
+			tbl.rows[18].cells[20].innerHTML='1';
+			tbl.rows[18].cells[20].style.backgroundColor='blue';
+			tbl.rows[18].cells[20].style.color='blue';
+			
+			tbl.rows[19].cells[21].innerHTML='1';
+			tbl.rows[19].cells[21].style.backgroundColor='blue';
+			tbl.rows[19].cells[21].style.color='blue';
+			
+			tbl.rows[20].cells[20].innerHTML='1';
+			tbl.rows[20].cells[20].style.backgroundColor='blue';
+			tbl.rows[20].cells[20].style.color='blue';
+			
+			
+			
+		}
+		function ship3(){
+			tbl.rows[48].cells[32].innerHTML='1';
+			tbl.rows[48].cells[32].style.backgroundColor='blue';
+			tbl.rows[48].cells[32].style.color='blue';
+			
+			tbl.rows[49].cells[33].innerHTML='1';
+			tbl.rows[49].cells[33].style.backgroundColor='blue';
+			tbl.rows[49].cells[33].style.color='blue';
+			
+			
+			tbl.rows[49].cells[34].innerHTML='1';
+			tbl.rows[49].cells[34].style.backgroundColor='blue';
+			tbl.rows[49].cells[34].style.color='blue';
+			
+			tbl.rows[47].cells[34].innerHTML='1';
+			tbl.rows[47].cells[34].style.backgroundColor='blue';
+			tbl.rows[47].cells[34].style.color='blue';
+			
+			tbl.rows[47].cells[33].innerHTML='1';
+			tbl.rows[47].cells[33].style.backgroundColor='blue';
+			tbl.rows[47].cells[33].style.color='blue'
+			
+			tbl.rows[48].cells[35].innerHTML='1';
+			tbl.rows[48].cells[35].style.backgroundColor='blue';
+			tbl.rows[48].cells[35].style.color='blue';
+		}
+		
+		function ship4(){
+			tbl.rows[33].cells[39].innerHTML='1';
+			tbl.rows[33].cells[39].style.backgroundColor='blue';
+			tbl.rows[33].cells[39].style.color='blue';
+			
+			tbl.rows[33].cells[40].innerHTML='1';
+			tbl.rows[33].cells[40].style.backgroundColor='blue';
+			tbl.rows[33].cells[40].style.color='blue';
+			
+			tbl.rows[33].cells[41].innerHTML='1';
+			tbl.rows[33].cells[41].style.backgroundColor='blue';
+			tbl.rows[33].cells[41].style.color='blue';
+		}
+    </script>
+</body>
+</html>
+ 
